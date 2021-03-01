@@ -1,10 +1,10 @@
-const pb = require("protobufjs");
+const pb = require('protobufjs');
 const net = require('net');
 
 let olaRoot;
 let rpcRoot;
 
-pb.load("Ola.proto")
+pb.load('Ola.proto')
     .then(function (root) {
         console.log('Ola.proto loaded');
         olaRoot = root;
@@ -40,7 +40,7 @@ pb.load("Ola.proto")
                 const header = new ArrayBuffer(4);
                 const view1 = new DataView(header);
 
-
+                // TODO: This form supports at most 256 byte. Fine for us for now
                 view1.setUint8(0, Buffer.byteLength(rpcBuffer));
                 view1.setUint8(3, 0x10);
 
@@ -59,6 +59,7 @@ pb.load("Ola.proto")
                 console.log(data.toString());
 
                 // First 4 byte are the header. For the moment, ignore it
+                // TODO: Check message version and length
                 const resp = data.slice(4);
                 console.log('Response:', resp);
 
